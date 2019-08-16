@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'iiBazaarRepository'
+    bintrayName = 'abmyapp'
+
+    publishedGroupId = 'ir.abmyapp'
+    libraryName = 'AB My App'
+    artifact = 'abmyapp'
+
+    libraryDescription = 'SDK for AB testing service of ABMyApp.ir'
+
+    siteUrl = 'https://github.com/hafhashtadacc/ABMyApp'
+    gitUrl = 'https://github.com/hafhashtadacc/ABMyApp.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'hafhashtadacc'
+    developerName = 'Yashar PourMohammad'
+    developerEmail = 'hafhashtad.acc@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+    bintray.pkg.userOrg = 'iibazaar'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.yashoid:office:1.2.0'
+
+}
