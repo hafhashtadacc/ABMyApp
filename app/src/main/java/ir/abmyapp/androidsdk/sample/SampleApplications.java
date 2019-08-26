@@ -9,15 +9,12 @@ import ir.abmyapp.androidsdk.IABResources;
 
 public class SampleApplications extends Application {
 
-    private static final String DOMAIN = "http://95.216.119.76:8080/";
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         ABResources.setConfiguration(
                 new ABConfig.Builder()
-                        .setDomain(DOMAIN)
                         .setDebug(true)
                         .build()
         );

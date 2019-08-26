@@ -278,6 +278,15 @@ class ABResourcesImp implements IABResources {
         checkForEventUpload();
     }
 
+    @Override
+    public void recordEvent(String key, String event) {
+        String experiment = mCachedResources.getExperiment(key);
+
+        if (experiment != null) {
+            mCachedEvents.recordEvent(experiment, event);
+        }
+    }
+
     private void checkForEventUpload() {
         if (mConfig.canUploadEvents(mCachedEvents.getPendingEventCount(), mCachedEvents.getLastEventUploadTime())) {
             if (mIsUploadingEvents) {

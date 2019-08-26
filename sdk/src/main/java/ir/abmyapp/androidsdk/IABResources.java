@@ -61,4 +61,6 @@ public interface IABResources {
 
     void recordEvent(String event);
 
+    void recordEvent(String key, String event);
+
 }

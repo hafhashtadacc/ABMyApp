@@ -68,17 +68,21 @@ class CachedEvents {
     }
 
     void recordImpression(String experiment) {
-        List<String> events = getEventList(experiment);
-
-        events.add(EVENT_IMPRESSION);
-
-        saveEventsInPreferences();
+        recordEvent(experiment, EVENT_IMPRESSION);
     }
 
     void recordEvent(String event) {
         for (Map.Entry<String, List<String>> entry: mEvents.entrySet()) {
             entry.getValue().add(event);
         }
+
+        saveEventsInPreferences();
+    }
+
+    void recordEvent(String experiment, String event) {
+        List<String> events = getEventList(experiment);
+
+        events.add(event);
 
         saveEventsInPreferences();
     }

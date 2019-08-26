@@ -51,6 +51,27 @@ android {
     bintray.pkg.userOrg = 'iibazaar'
 }
 
+apply plugin: 'maven'
+
+task createPom {
+    pom {
+        project {
+            groupId 'ir.abmyapp'
+            artifactId 'abmyapp'
+            version '1.0.0'
+
+            inceptionYear '2019'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }        }
+
+    }.writeTo("pom.xml")
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
