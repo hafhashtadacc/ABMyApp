@@ -170,6 +170,13 @@ class ABResourcesImp implements IABResources {
     }
 
     @Override
+    public Boolean getBoolean(String key) {
+        String value = getString(key);
+
+        return value == null ? null : Boolean.parseBoolean(value);
+    }
+
+    @Override
     public Float getDimen(String key) {
         String value = getString(key);
 
@@ -233,6 +240,17 @@ class ABResourcesImp implements IABResources {
             TypedValue outValue = new TypedValue();
             mResources.getValue(resId, outValue, true);
             value = outValue.getFloat();
+        }
+
+        return value;
+    }
+
+    @Override
+    public boolean getBoolean(int resId) {
+        Boolean value = getBoolean(getResourceName(resId));
+
+        if (value == null) {
+            value = mResources.getBoolean(resId);
         }
 
         return value;

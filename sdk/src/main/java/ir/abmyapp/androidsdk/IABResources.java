@@ -2,6 +2,7 @@ package ir.abmyapp.androidsdk;
 
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.BoolRes;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
@@ -39,6 +40,8 @@ public interface IABResources {
 
     Float getFloat(String key);
 
+    Boolean getBoolean(String key);
+
     Float getDimen(String key);
 
     Integer getDimenPixelSize(String key);
@@ -52,6 +55,8 @@ public interface IABResources {
     int getColor(@ColorRes int resId);
 
     float getFloat(@FractionRes int resId);
+
+    boolean getBoolean(@BoolRes int resId);
 
     float getDimen(@DimenRes int resId);
 
