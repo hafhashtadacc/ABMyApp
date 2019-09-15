@@ -7,8 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.TypedValue;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 class ABResourcesImp implements IABResources {
 
@@ -283,7 +283,7 @@ class ABResourcesImp implements IABResources {
         Drawable value = getDrawable(getResourceName(resId));
 
         if (value == null) {
-            value = ResourcesCompat.getDrawable(mResources, resId, null);
+            value = AppCompatResources.getDrawable(mContext, resId);
         }
 
         return value;
