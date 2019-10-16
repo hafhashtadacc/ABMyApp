@@ -9,7 +9,7 @@ public class ABConfig {
 
     private static final long FETCH_INTERVAL = TimeUnit.MILLISECONDS.convert(6, TimeUnit.HOURS);
     private static final long EVENT_UPLOAD_INTERVAL = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS);
-    private static final String DOMAIN = "http://wasabi.abmyapp.ir/";
+    private static final String DOMAIN = "https://wasabi.abmyapp.ir/";
 
     public static class Builder {
 
