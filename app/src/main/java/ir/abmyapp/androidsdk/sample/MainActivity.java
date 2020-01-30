@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
         mHelloText = findViewById(R.id.hello_text);
 
-        String alphaText = ABResources.get(this).getString(R.string.hello);
-        String betaText = ABResources.get(this).getString("hello");
+        String alphaText = ABResources.get().getString(R.string.hello);
+        String betaText = ABResources.get().getString("hello");
 
         Log.i(TAG, "Text from resources is: " + alphaText);
         Log.i(TAG, "Text from constants is: " + betaText);

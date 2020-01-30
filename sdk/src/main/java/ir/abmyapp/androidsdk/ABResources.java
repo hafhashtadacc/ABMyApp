@@ -4,23 +4,27 @@ import android.content.Context;
 
 public class ABResources {
 
-    private static ABConfig mConfig = null;
-
     private static IABResources mABResources = null;
 
-    public static void setConfiguration(ABConfig config) {
-        mConfig = config;
+    public static void init(Context context, String apiToken, ABConfig config) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context can not be null.");
+        }
 
-        mABResources = null;
+        if (apiToken == null) {
+            throw new IllegalArgumentException("API token is required.");
+        }
+
+        if (config == null) {
+            config = new ABConfig.Builder().build();
+        }
+
+        mABResources = new ABResourcesImp(context, apiToken, config);
     }
 
-    public static IABResources get(Context context) {
+    public static IABResources get() {
         if (mABResources == null) {
-            if (mConfig == null) {
-                mConfig = new ABConfig.Builder().build();
-            }
-
-            mABResources = new ABResourcesImp(context, mConfig);
+            throw new IllegalStateException("ABResources is not initialized.");
         }
 
         return mABResources;

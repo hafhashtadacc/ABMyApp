@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/hafhashtadacc/ABMyApp'
     gitUrl = 'https://github.com/hafhashtadacc/ABMyApp.git'
 
-    libraryVersion = '1.0.6'
+    libraryVersion = '2.0.0'
 
     developerId = 'hafhashtadacc'
     developerName = 'Yashar PourMohammad'
@@ -75,11 +75,11 @@ task createPom {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.yashoid:office:1.2.0'
+    implementation 'com.yashoid:office:1.2.1'
 
 }

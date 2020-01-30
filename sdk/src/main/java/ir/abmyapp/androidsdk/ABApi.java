@@ -20,7 +20,7 @@ class ABApi implements BaseABApi {
     private GetResourcesApi mGetResourcesApi;
     private SendEventsApi mSendEventsApi;
 
-    ABApi(Context context, String domain, boolean debug, TaskManager taskManager, String backgroundSection) {
+    ABApi(Context context, String domain, String apiToken, boolean debug, TaskManager taskManager, String backgroundSection) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
         String user = prefs.getString(USER, null);
@@ -31,15 +31,15 @@ class ABApi implements BaseABApi {
             prefs.edit().putString(USER, user).apply();
         }
 
-        mGetResourcesApi = new GetResourcesApi(context, user, domain, debug, taskManager, backgroundSection);
-        mSendEventsApi = new SendEventsApi(context, user, domain, taskManager, backgroundSection);
+        mGetResourcesApi = new GetResourcesApi(domain, apiToken, debug, user, taskManager, backgroundSection);
+        mSendEventsApi = new SendEventsApi(domain, apiToken, user, taskManager, backgroundSection);
     }
 
     void getResources(final JSONObject profile, final OnGetResourcesResultCallback callback) {
         mGetResourcesApi.getResources(profile, callback);
     }
 
-    void sendEvents(Map<String, List<String>> events, OnSendEventsResultCallback callback) {
+    void sendEvents(List<String> events, OnSendEventsResultCallback callback) {
         mSendEventsApi.sendEvents(events, callback);
     }
 

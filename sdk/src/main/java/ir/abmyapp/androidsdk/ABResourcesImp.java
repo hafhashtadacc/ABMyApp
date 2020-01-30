@@ -10,6 +10,9 @@ import android.util.TypedValue;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class ABResourcesImp implements IABResources {
 
     private static final FetchResult NOT_FETCH_TIME_RESULT = new FetchResult() {
@@ -52,7 +55,7 @@ class ABResourcesImp implements IABResources {
     private boolean mIsGettingResources = false;
     private boolean mIsUploadingEvents = false;
 
-    ABResourcesImp(Context context, ABConfig config) {
+    ABResourcesImp(Context context, String apiToken, ABConfig config) {
         mContext = context.getApplicationContext();
         mResources = mContext.getResources();
 
@@ -64,7 +67,7 @@ class ABResourcesImp implements IABResources {
         mCachedEvents = new CachedEvents(mContext);
         mCachedProfile = new CachedProfile(mContext);
 
-        mApi = new ABApi(mContext, mConfig.getDomain(), mConfig.isDebug(), mConfig.getTaskManager(), mConfig.getBackgroundOfficeSection());
+        mApi = new ABApi(mContext, mConfig.getDomain(), apiToken, mConfig.isDebug(), mConfig.getTaskManager(), mConfig.getBackgroundOfficeSection());
     }
 
     @Override
@@ -140,8 +143,6 @@ class ABResourcesImp implements IABResources {
         String value = mCachedResources.get(key);
 
         if (value != null) {
-            mCachedEvents.recordImpression(mCachedResources.getExperiment(key));
-
             checkForEventUpload();
         }
 
@@ -296,15 +297,6 @@ class ABResourcesImp implements IABResources {
         checkForEventUpload();
     }
 
-    @Override
-    public void recordEvent(String key, String event) {
-        String experiment = mCachedResources.getExperiment(key);
-
-        if (experiment != null) {
-            mCachedEvents.recordEvent(experiment, event);
-        }
-    }
-
     private void checkForEventUpload() {
         if (mConfig.canUploadEvents(mCachedEvents.getPendingEventCount(), mCachedEvents.getLastEventUploadTime())) {
             if (mIsUploadingEvents) {
@@ -313,14 +305,16 @@ class ABResourcesImp implements IABResources {
 
             mIsUploadingEvents = true;
 
-            mApi.sendEvents(mCachedEvents.getEvents(), new ABApi.OnSendEventsResultCallback() {
+            final List<String> events = new ArrayList<>(mCachedEvents.getEvents());
+
+            mApi.sendEvents(events, new ABApi.OnSendEventsResultCallback() {
 
                 @Override
                 public void onSendEventsResult(ABApi.SendEventsResult result) {
                     mIsUploadingEvents = false;
 
                     if (result.isSuccessful()) {
-                        mCachedEvents.onEventsPushed(result.getEvents());
+                        mCachedEvents.onEventsPushed(events);
 
                         checkForEventUpload();
                     }

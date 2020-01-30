@@ -26,8 +26,6 @@ public interface BaseABApi {
 
         boolean isSuccessful();
 
-        Map<String, List<String>> getEvents();
-
     }
 
     interface OnSendEventsResultCallback {

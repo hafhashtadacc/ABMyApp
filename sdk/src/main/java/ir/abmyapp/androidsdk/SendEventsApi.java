@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SendEventsApi implements BaseABApi {
 
-    private static final String SEND_EVENTS_URL = "api/v1/events/applications/{app}/experiments/{experiment}/users/{user}";
+    private static final String SEND_EVENTS_URL = "api/v1/events/apiToken/{token}/userId/{user}";
 
     private static final String EVENTS = "events";
     private static final String NAME = "name";
@@ -28,42 +28,31 @@ public class SendEventsApi implements BaseABApi {
     private String mBackgroundSection;
 
     private String mDomain;
-    private String mAppName;
+    private String mApiToken;
     private String mUserName;
 
-    SendEventsApi(Context context, String user, String domain, TaskManager taskManager, String backgroundSection) {
+    SendEventsApi(String domain, String apiToken, String user, TaskManager taskManager, String backgroundSection) {
         mTaskManager = taskManager;
         mBackgroundSection = backgroundSection;
 
         mDomain = domain;
-        mAppName = context.getPackageName().replaceAll("\\.", "-");
+        mApiToken = apiToken;
         mUserName = user;
     }
 
-    void sendEvents(final Map<String, List<String>> events, final OnSendEventsResultCallback callback) {
+    void sendEvents(final List<String> events, final OnSendEventsResultCallback callback) {
         AsyncOperation operation = new AsyncOperation(mTaskManager, TaskManager.MAIN, mBackgroundSection) {
 
             private boolean mSuccessful = false;
-            private Map<String, List<String>> mEvents;
 
             @Override
             protected void doInBackground() {
-                mEvents = new HashMap<>(events.size());
-
-                for (String experiment: events.keySet()) {
-                    List<String> eventList = events.get(experiment);
-
-                    if (eventList == null || eventList.isEmpty()) {
-                        continue;
-                    }
-
-                    boolean successful = sendEvents(experiment, eventList);
-
-                    if (successful) {
-                        mSuccessful = true;
-                        mEvents.put(experiment, eventList);
-                    }
+                if (events == null || events.isEmpty()) {
+                    mSuccessful = true;
+                    return;
                 }
+
+                mSuccessful = sendEvents(events);
             }
 
             @Override
@@ -75,11 +64,6 @@ public class SendEventsApi implements BaseABApi {
                         return mSuccessful;
                     }
 
-                    @Override
-                    public Map<String, List<String>> getEvents() {
-                        return mEvents;
-                    }
-
                 });
             }
 
@@ -88,10 +72,9 @@ public class SendEventsApi implements BaseABApi {
         operation.execute();
     }
 
-    private boolean sendEvents(String experiment, List<String> eventList) {
+    private boolean sendEvents(List<String> events) {
         String urlString = mDomain + SEND_EVENTS_URL
-                .replaceAll("\\{app\\}", mAppName)
-                .replaceAll("\\{experiment\\}", experiment)
+                .replaceAll("\\{token\\}", mApiToken)
                 .replaceAll("\\{user\\}", mUserName);
 
         URL url;
@@ -110,7 +93,7 @@ public class SendEventsApi implements BaseABApi {
             connection.setDoOutput(true);
             connection.addRequestProperty(CONTENT_TYPE, CONTENT_TYPE_JSON);
 
-            connection.getOutputStream().write(getEventListBody(eventList).getBytes("UTF-8"));
+            connection.getOutputStream().write(getEventListBody(events).getBytes("UTF-8"));
 
             int responseCode = connection.getResponseCode();
 
@@ -131,21 +114,13 @@ public class SendEventsApi implements BaseABApi {
             JSONArray events = new JSONArray();
 
             for (String event: eventList) {
-                events.put(getEventObject(event));
+                events.put(event);
             }
 
             body.put(EVENTS, events);
         } catch (JSONException e) { }
 
         return body.toString();
-    }
-
-    private JSONObject getEventObject(String event) throws JSONException {
-        JSONObject object = new JSONObject();
-
-        object.put(NAME, event);
-
-        return object;
     }
 
 }

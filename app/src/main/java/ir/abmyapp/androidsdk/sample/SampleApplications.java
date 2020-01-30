@@ -9,17 +9,19 @@ import ir.abmyapp.androidsdk.IABResources;
 
 public class SampleApplications extends Application {
 
+    private static final String API_TOKEN = "19ede3f2a810417882ecd8e71da86c61";
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        ABResources.setConfiguration(
-                new ABConfig.Builder()
-                        .setDebug(true)
-                        .build()
-        );
+        ABConfig abConfig = new ABConfig.Builder()
+                .setDebug(true)
+                .build();
 
-        ABResources.get(this).fetch(new IABResources.OnFetchResultCallback() {
+        ABResources.init(this, API_TOKEN, abConfig);
+
+        ABResources.get().fetch(new IABResources.OnFetchResultCallback() {
 
             @Override
             public void onFetchResult(IABResources.FetchResult result) {

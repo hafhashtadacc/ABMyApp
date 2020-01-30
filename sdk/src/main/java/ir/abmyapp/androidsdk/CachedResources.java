@@ -66,8 +66,4 @@ class CachedResources {
         return mData.getValue(key);
     }
 
-    String getExperiment(String key) {
-        return mData.getExperiment(key);
-    }
-
 }
