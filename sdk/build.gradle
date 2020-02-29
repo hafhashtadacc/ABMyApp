@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/hafhashtadacc/ABMyApp'
     gitUrl = 'https://github.com/hafhashtadacc/ABMyApp.git'
 
-    libraryVersion = '2.0.0'
+    libraryVersion = '2.0.1'
 
     developerId = 'hafhashtadacc'
     developerName = 'Yashar PourMohammad'
@@ -58,7 +58,7 @@ task createPom {
         project {
             groupId 'ir.abmyapp'
             artifactId 'abmyapp'
-            version '2.0.0'
+            version '2.0.1'
 
             inceptionYear '2019'
             licenses {

@@ -197,6 +197,10 @@ class ABResourcesImp implements IABResources {
     }
 
     private String getResourceName(int resId) {
+        if (resId == 0) {
+            return null;
+        }
+
         return mResources.getResourceTypeName(resId) + "/" + mResources.getResourceEntryName(resId);
     }
 
